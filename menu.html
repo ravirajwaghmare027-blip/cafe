@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>E11Ven Cafe Menu</title>
+
+<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+<link rel="stylesheet" href="assets/css/cafe.css">
+
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+<style>
+
+body{
+font-family:Poppins;
+background:antiquewhite;
+margin-top:-30px;
+}
+
+.wrap{
+max-width:1200px;
+margin:auto;
+padding:140px 40px 40px;
+}
+
+/* FILTER */
+
+.filter-bar{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-bottom:20px;
+}
+
+.filter-btn{
+border:none;
+padding:8px 18px;
+border-radius:20px;
+background:#ddd;
+cursor:pointer;
+}
+
+.filter-btn.active{
+background:#d35400;
+color:white;
+}
+
+/* SEARCH */
+
+.search-box{
+display:flex;
+justify-content:center;
+margin-bottom:30px;
+}
+
+.search-box input{
+width:400px;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+/* MENU */
+
+.menu-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.menu-card{
+background:white;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+overflow:hidden;
+}
+
+.menu-img{
+width:100%;
+height:160px;
+object-fit:cover;
+}
+
+.menu-body{
+padding:15px;
+}
+
+.menu-title-row{
+display:flex;
+justify-content:space-between;
+}
+
+.price{
+color:#d35400;
+font-weight:bold;
+}
+
+.menu-footer{
+display:flex;
+justify-content:space-between;
+margin-top:10px;
+}
+
+.add-btn{
+background:#d35400;
+color:white;
+border:none;
+padding:6px 14px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.tag{
+padding:3px 8px;
+border-radius:5px;
+font-size:12px;
+}
+
+.veg{background:#2ecc71;color:white}
+.nonveg{background:#e74c3c;color:white}
+
+/* ORDER */
+
+.order-section{
+margin-top:60px;
+background:white;
+padding:20px;
+border-radius:10px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #eee;
+text-align:center;
+}
+
+.remove-btn{
+background:red;
+color:white;
+border:none;
+padding:5px 10px;
+border-radius:5px;
+cursor:pointer;
+}
+
+.total{
+font-size:20px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.next-btn{
+background:#27ae60;
+color:white;
+border:none;
+padding:10px 20px;
+border-radius:6px;
+cursor:pointer;
+margin-top:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- HEADER -->
+
+<header class="header-area header-sticky">
+<div class="container">
+<div class="row">
+<div class="col-12">
+
+<nav class="main-nav">
+
+<a href="index.html" class="logo">
+<img src="assets/images/logo1.png" style="width:110px;height:140px;margin-top:-22px;">
+</a>
+
+<ul class="nav">
+<li><a href="index.html">Home</a></li>
+<li><a href="menu.html" class="active">Menu</a></li>
+<li><a href="order.html">Order</a></li>
+<li><a href="hall.html">Hall Booking</a></li>
+<li><a href="reserve.html">Reservations</a></li>
+<li><a href="admin.html">Admin</a></li>
+</ul>
+
+</nav>
+
+</div>
+</div>
+</div>
+</header>
+
+
+<div class="wrap">
+
+<h1 style="text-align:center">E11Ven Cafe Menu</h1>
+
+
+<!-- FILTER -->
+
+<div class="filter-bar">
+
+<button class="filter-btn active" onclick="filterMenu('all',this)">All</button>
+<button class="filter-btn" onclick="filterMenu('veg',this)">Veg</button>
+<button class="filter-btn" onclick="filterMenu('nonveg',this)">Non-Veg</button>
+<button class="filter-btn" onclick="filterMenu('drinks',this)">Drinks</button>
+
+</div>
+
+
+<!-- SEARCH -->
+
+<div class="search-box">
+<input type="text" placeholder="Search food..." onkeyup="searchMenu(this.value)">
+</div>
+
+
+<!-- MENU -->
+
+<div id="menuList" class="menu-grid"></div>
+
+
+<!-- ORDER SECTION -->
+
+<div class="order-section">
+
+<h2>Your Order</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Item</th>
+<th>Price</th>
+<th>Qty</th>
+<th>Total</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="cartItems"></tbody>
+
+</table>
+
+<div class="total">
+Total: ₹<span id="cartTotal">0</span>
+</div>
+
+<button class="next-btn" onclick="goToOrder()">Next Step</button>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+/* MENU DATA */
+const MENU=[
+
+{
+name:"Cafe Latte",
+price:140,
+veg:true,
+cat:"drinks",
+img:"https://tse3.mm.bing.net/th/id/OIP.WfEgAMoIWXW7lnwH9trbPQHaE7?cb=thfvnext&rs=1&pid=ImgDetMain&o=7&rm=3.jpg"
+},
+
+{
+name:"Masala Dosa",
+price:180,
+veg:true,
+cat:"veg",
+img:"https://t3.ftcdn.net/jpg/03/97/46/66/360_F_397466683_4U8hMaUgWdFPNc8KMKUQ4aH2qR1yG0sA.jpg"
+},
+
+{
+name:"Chicken Burger",
+price:220,
+veg:false,
+cat:"nonveg",
+img:"https://tse4.mm.bing.net/th/id/OIP.m93SV6ox1swkqRaBnEzbHgHaHa?cb=thfvnext&rs=1&pid=ImgDetMain&o=7&rm=3.jpg"
+},
+
+{
+name:"Cold Coffee",
+price:160,
+veg:true,
+cat:"drinks",
+img:"https://img.freepik.com/premium-photo/cold-coffee-frappuccino_880763-3302.jpg"
+},
+
+{
+name:"Veg Burger",
+price:150,
+veg:true,
+cat:"veg",
+img:"https://tse1.mm.bing.net/th/id/OIP.2ajZVYpbRl7E8N3nCDEmawHaE8?cb=thfvnext&rs=1&pid=ImgDetMain&o=7&rm=3.jpg"
+}
+
+];
+
+let cart=[];
+let currentFilter="all";
+
+
+function renderMenu(){
+
+let list=document.getElementById("menuList");
+list.innerHTML="";
+
+MENU.forEach(item=>{
+
+if(currentFilter!="all" && item.cat!=currentFilter) return;
+
+let card=document.createElement("div");
+
+card.className="menu-card";
+
+card.innerHTML=`
+
+<img src="${item.img}" class="menu-img">
+
+<div class="menu-body">
+
+<div class="menu-title-row">
+<h4>${item.name}</h4>
+<span class="price">₹${item.price}</span>
+</div>
+
+<div class="menu-footer">
+
+<span class="tag ${item.veg?'veg':'nonveg'}">
+${item.veg?'VEG':'NON-VEG'}
+</span>
+
+<button class="add-btn">Add</button>
+
+</div>
+
+</div>
+`;
+
+card.querySelector(".add-btn").onclick=function(){
+addToCart(item);
+};
+
+list.appendChild(card);
+
+});
+
+}
+
+
+function filterMenu(type,btn){
+
+currentFilter=type;
+
+document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
+
+renderMenu();
+
+}
+
+
+function searchMenu(text){
+
+text=text.toLowerCase();
+
+let list=document.getElementById("menuList");
+list.innerHTML="";
+
+MENU.filter(i=>i.name.toLowerCase().includes(text)).forEach(item=>{
+
+let card=document.createElement("div");
+
+card.className="menu-card";
+
+card.innerHTML=`
+
+<img src="${item.img}" class="menu-img">
+
+<div class="menu-body">
+
+<div class="menu-title-row">
+<h4>${item.name}</h4>
+<span class="price">₹${item.price}</span>
+</div>
+
+<div class="menu-footer">
+
+<span class="tag ${item.veg?'veg':'nonveg'}">
+${item.veg?'VEG':'NON-VEG'}
+</span>
+
+<button class="add-btn">Add</button>
+
+</div>
+
+
+</div>
+`;
+
+card.querySelector(".add-btn").onclick=function(){
+addToCart(item);
+};
+
+list.appendChild(card);
+
+});
+
+}
+
+
+function addToCart(item){
+
+let found=cart.find(i=>i.name===item.name);
+
+if(found){
+found.qty++;
+}else{
+cart.push({...item,qty:1});
+}
+
+renderCart();
+
+}
+
+
+function removeItem(index){
+
+cart.splice(index,1);
+renderCart();
+
+}
+
+
+function renderCart(){
+
+let html="";
+let total=0;
+
+cart.forEach((item,index)=>{
+
+let itemTotal=item.price*item.qty;
+
+total+=itemTotal;
+
+html+=`
+
+<tr>
+
+<td>${item.name}</td>
+<td>₹${item.price}</td>
+<td>${item.qty}</td>
+<td>₹${itemTotal}</td>
+
+<td>
+<button class="remove-btn" onclick="removeItem(${index})">Cancel</button>
+</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("cartItems").innerHTML=html;
+document.getElementById("cartTotal").innerText=total;
+
+}
+
+
+function goToOrder(){
+
+if(cart.length===0){
+alert("Add items first");
+return;
+}
+
+localStorage.setItem("cart",JSON.stringify(cart));
+
+window.location.href="order.html";
+
+}
+
+renderMenu();
+
+
+</script>
+
+
+<footer class="footer">
+<div class="container">
+<div class="row">
+
+<div class="col-lg-4">
+<ul class="social-icons">
+<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+<li><a href="#"><i class="fa fa-instagram"></i></a></li>
+</ul>
+</div>
+<div class="col-lg-4">
+<div class="logo">
+<a href="index.html">
+<img src="assets/images/logo2.png" style="width:160px;margin-top:-40px;">
+</a>
+</div>
+</div>
+
+<div class="col-lg-4">
+<p>© Copyright E11Ven Cafe Co.<br>
+Design: CrystelCode Technologies</p>
+</div>
+
+</div>
+</div>
+</footer>
+
+
+</body>
+</html>

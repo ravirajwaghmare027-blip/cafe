@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard — E11ven Cafe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" type="text/css" href="assets/css/style1.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+  <link rel="stylesheet" href="assets/css/cafe.css">
+  <link rel="stylesheet" href="assets/css/owl-carousel.css">
+  <link rel="stylesheet" href="assets/css/lightbox.css">
+
+  <style>
+    .admin-card {background:#fff; padding:20px; border-radius:12px; margin:20px 0;}
+    .admin-table-box table {width:100%; border-collapse:collapse; margin-top:10px;}
+    .admin-table-box th, .admin-table-box td {padding:8px; border:1px solid #eee; text-align:left;}
+    .admin-notes {width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;}
+    .btn {padding:8px 12px; margin:4px; cursor:pointer; border:none; border-radius:6px;}
+    .btn.green {background:green; color:#fff;}
+    .btn.dark {background:#333; color:#fff;}
+    .btn.danger {background:red; color:#fff;}
+  </style>
+</head>
+
+<body style="background-color: antiquewhite;">
+
+<!-- ***** Header ***** -->
+<header class="header-area header-sticky">
+  <div class="container">
+    <nav class="main-nav">
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo1.png" alt="E11VEN Cafe" style="width:110px;height:140px;margin-top:-22px;">
+      </a>
+      <ul class="nav">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="order.html">Order</a></li>
+        <li><a href="hall.html">Hall Booking</a></li>
+        <li><a href="reserve.html">Reservations</a></li>
+        <li><a href="admin-login.html">Admin</a></li>
+      </ul>
+      <a class='menu-trigger'><span>Menu</span></a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Redirect if not logged in
+  if(localStorage.getItem("e11_admin_logged_in") !== "yes"){
+    window.location.href = "admin-login.html";
+  }
+</script>
+
+<section class="admin-dashboard" style="margin-top: 100px;">
+  <h1 class="admin-title">Admin Dashboard</h1>
+  <p class="admin-subtitle muted">Manage everything from one place</p>
+
+  <!-- Orders -->
+  <div class="admin-card full">
+    <h2>Orders</h2>
+    <div id="adminOrders" class="admin-table-box">
+      <p>No orders yet.</p>
+    </div>
+  </div>
+
+  <!-- Table Reservations -->
+  <div class="admin-card full">
+    <h2>Table Reservations</h2>
+    <div id="adminReservations" class="admin-table-box">
+      <p>No reservations yet.</p>
+    </div>
+  </div>
+
+  <!-- Hall Bookings -->
+  <div class="admin-card full">
+    <h2>Hall Bookings</h2>
+    <div id="adminHalls" class="admin-table-box">
+      <p>No hall bookings yet.</p>
+    </div>
+  </div>
+
+  <!-- Admin Notes -->
+  <div class="admin-card full">
+    <h2>Admin Notes</h2>
+    <textarea id="adminNotes" rows="6" class="admin-notes"></textarea>
+    <button class="btn" onclick="saveNotes()">Save Notes</button>
+
+    <h3 style="margin-top:20px;">Controls</h3>
+    <div class="controls-row">
+      <button class="btn danger" onclick="clearAllData()">Clear All Data</button>
+      <button class="btn dark" onclick="exportData()">Export JSON</button>
+      <button class="btn green" onclick="importDemo()">Load Demo Data</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-xs-12">
+        <ul class="social-icons">
+          <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+          <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+          <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <div class="logo">
+          <a href="index.html"><img src="assets/images/logo2.png" alt="" style="width:160px;margin-top:-40px;"></a>
+        </div>
+      </div>
+      <div class="col-lg-4 col-xs-12">
+        <p>© Copyright E11Ven Cafe Co.<br>Design: CrystelCode Technologies</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Save Admin Notes
+function saveNotes(){
+  const notes = document.getElementById("adminNotes").value;
+  localStorage.setItem("e11_admin_notes", notes);
+  alert("Notes saved!");
+}
+
+// Clear All Data
+function clearAllData(){
+  if(confirm("Are you sure you want to clear all data?")){
+    localStorage.removeItem("e11_orders");
+    localStorage.removeItem("e11_reservations");
+    localStorage.removeItem("e11_halls");
+    localStorage.removeItem("cart");
+    renderAdminData();
+    alert("All data cleared!");
+  }
+}
+
+// Export Data as JSON
+function renderAdminData(){
+
+const ordersDiv=document.getElementById("adminOrders");
+const reservationsDiv=document.getElementById("adminReservations");
+const hallsDiv=document.getElementById("adminHalls");
+
+const orders=JSON.parse(localStorage.getItem("e11_orders")||"[]");
+const reservations=JSON.parse(localStorage.getItem("e11_reservations")||"[]");
+const halls=JSON.parse(localStorage.getItem("e11_halls")||"[]");
+
+
+// ---------------- ORDERS ----------------
+
+if(orders.length===0){
+
+ordersDiv.innerHTML="<p>No orders yet.</p>";
+
+}else{
+
+let table=`<table>
+<tr>
+<th>Customer</th>
+<th>Phone</th>
+<th>Items</th>
+<th>Total Price</th>
+<th>Order Time</th>
+</tr>`;
+
+orders.forEach(order=>{
+
+let items="";
+
+order.items.forEach(i=>{
+items+=`${i.name} (₹${i.price} x ${i.qty})<br>`;
+});
+
+table+=`<tr>
+<td>${order.customer}</td>
+<td>${order.phone}</td>
+<td>${items}</td>
+<td>₹${order.total}</td>
+<td>${order.time}</td>
+</tr>`;
+
+});
+
+table+="</table>";
+
+ordersDiv.innerHTML=table;
+
+}
+
+
+// ---------------- RESERVATIONS ----------------
+
+if(reservations.length===0){
+
+reservationsDiv.innerHTML="<p>No reservations yet.</p>";
+
+}else{
+
+let table=`<table>
+<tr>
+<th>Name</th>
+<th>Phone</th>
+<th>Date</th>
+<th>Time</th>
+<th>Table</th>
+<th>Guests</th>
+</tr>`;
+
+reservations.forEach(r=>{
+
+table+=`<tr>
+<td>${r.name}</td>
+<td>${r.phone}</td>
+<td>${r.date}</td>
+<td>${r.time}</td>
+<td>${r.table}</td>
+<td>${r.guests}</td>
+</tr>`;
+
+});
+
+table+="</table>";
+
+reservationsDiv.innerHTML=table;
+
+}
+
+
+// ---------------- HALL BOOKINGS ----------------
+
+if(halls.length===0){
+
+hallsDiv.innerHTML="<p>No hall bookings yet.</p>";
+
+}else{
+
+let table=`<table>
+<tr>
+<th>Customer</th>
+<th>Phone</th>
+<th>Event</th>
+<th>Hall</th>
+<th>Price</th>
+<th>Date</th>
+<th>Time</th>
+</tr>`;
+
+halls.forEach(h=>{
+
+table+=`<tr>
+<td>${h.customer}</td>
+<td>${h.phone}</td>
+<td>${h.event}</td>
+<td>${h.hall}</td>
+<td>₹${h.price}</td>
+<td>${h.date}</td>
+<td>${h.time}</td>
+</tr>`;
+
+});
+
+table+="</table>";
+
+hallsDiv.innerHTML=table;
+
+}
+
+
+// ---------------- ADMIN NOTES ----------------
+
+document.getElementById("adminNotes").value=
+localStorage.getItem("e11_admin_notes")||"";
+
+}
+
+// Call on page load
+window.onload = renderAdminData;
+
+</script>
+</body>
+</html>

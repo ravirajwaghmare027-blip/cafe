@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reserve Table — E11ven Cafe</title>
+
+  <link rel="stylesheet" href="assets/css/style1.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app1.js"></script>
+    <script src="assets/js/admin-app.js"></script>
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <title>E11VenCafe</title>
+<!--
+    
+TemplateMo 558 Klassy Cafe
+
+https://templatemo.com/tm-558-klassy-cafe
+
+-->
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+<link rel="stylesheet" href="assets/css/cafe.css">
+
+    <link rel="stylesheet" href="assets/css/owl-carousel.css">
+
+    <link rel="stylesheet" href="assets/css/lightbox.css">
+
+    </head>
+    
+    <body style="background-color: antiquewhite;">
+    
+    <!-- ***** Preloader Start ***** -->
+   
+    
+    
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="index.html" class="logo">
+                            <img src="assets/images/logo1.png" align="E11VEN cafe" style="width: 110px; height: 140px; margin-top: -22px;">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li class="scroll-to-section"><a href="index.html" class="active">Home</a></li>
+                            <!--  <li class="scroll-to-section"><a href="contact.html">About</a></li>   -->
+                           	
+                        <!-- 
+                            <li class="submenu">
+                                <a href="javascript:;">Drop Down</a>
+                                <ul>
+                                    <li><a href="#">Drop Down Page 1</a></li>
+                                    <li><a href="#">Drop Down Page 2</a></li>
+                                    <li><a href="#">Drop Down Page 3</a></li>
+                                </ul>
+                            </li>
+                        -->
+                            <li class="scroll-to-section"><a href="menu.html">Menu</a></li>
+                            <li class="scroll-to-section"><a href="order.html">Order</a></li> 
+                           <!-- <li class="submenu">
+                                <a href="javascript:;">Features</a>
+                                <ul>
+                                    <li><a href="#">Features Page 1</a></li>
+                                    <li><a href="#">Features Page 2</a></li>
+                                    <li><a href="#">Features Page 3</a></li>
+                                    <li><a href="#">Features Page 4</a></li>
+                                </ul>
+                            </li>-->
+                            <li class="scroll-to-section" ><a href="hall.html">Hall Booking</a></li>
+                            <li class="scroll-to-section"><a href="reserve.html">Reservations</a></li> 
+                            <li class="scroll-to-section"><a href="admin-login.html">Admin</a></li> 
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+<!-- FULLSCREEN RESERVATION HERO -->
+<section class="reserve-hero">
+
+  <div class="reserve-form-wrapper">
+    <h2>Reserve Your Table</h2>
+    <p>Perfect ambience • Fresh meals • Unforgettable experience</p>
+
+    <div class="reserve-grid">
+
+      <!-- Name -->
+      <div class="floating-group">
+        <label>Your Name *</label>
+        <input id="resName" type="text">
+      </div>
+
+      <!-- Phone -->
+      <div class="floating-group">
+        <label>Phone Number *</label>
+        <input id="resPhone" type="text">
+      </div>
+
+      <!-- Date -->
+      <div class="floating-group">
+        <label>Date *</label>
+        <input id="resDate" type="date">
+      </div>
+
+      <!-- Time -->
+      <div class="floating-group">
+        <label>Time *</label>
+        <input id="resTime" type="time">
+      </div>
+
+      <!-- Table Number -->
+      <div class="floating-group">
+        <label>Table Number *</label>
+        <select id="resTableNo">
+          <option value=""></option>
+          <option>1</option><option>2</option><option>3</option>
+          <option>4</option><option>5</option><option>6</option>
+          <option>7</option><option>8</option>
+        </select>
+      </div>
+
+      <!-- Guests -->
+      <div class="floating-group">
+        <label>Number of Guests *</label>
+        <select id="resGuests">
+          <option value=""></option>
+          <option>1</option><option>2</option><option>3</option>
+          <option>4</option><option>5</option><option>6</option>
+          <option>7</option><option>8</option>
+        </select>
+      </div>
+
+      <!-- Notes -->
+      <div class="floating-group" style="grid-column: span 2;">
+        <label>Special Request</label>
+        <textarea id="resNotes" rows="4"></textarea>
+      </div>
+
+    </div>
+
+    <button class="btn reserve-btn" style="width:100%; margin-top:18px; background-color:#d35400;" onclick="reserveNow()">
+      Confirm Reservation
+    </button>
+
+    <div class="info-tags">
+      <div class="info-tag"><i class="fa fa-mug-hot"></i> Cozy Ambience</div>
+      <div class="info-tag"><i class="fa fa-plate-wheat"></i> Fresh Food</div>
+      <div class="info-tag"><i class="fa fa-wifi"></i> Free Wi-Fi</div>
+      <div class="info-tag"><i class="fa fa-couch"></i> Comfortable Seating</div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">© <span id="year"></span> E11ven Cafe</div>
+</footer>
+
+
+<script>
+function reserveNow() {
+  const name = $("resName").value;
+  const phone = $("resPhone").value;
+  const date = $("resDate").value;
+  const time = $("resTime").value;
+  const table = $("resTableNo").value;
+  const guests = $("resGuests").value;
+  const notes = $("resNotes").value;
+
+  if(!name || !phone || !date || !time || !table || !guests){
+    alert("Please fill all required fields");
+    return;
+  }
+
+  let reservations = load("e11_reservations", []);
+
+  reservations.push({
+    id: uid("res"),
+    name,
+    phone,
+    date,
+    time,
+    table,
+    guests,
+    notes,
+    status: "requested",  // ⭐ ADDED
+    created: new Date().toISOString()
+  });
+
+  save("e11_reservations", reservations);
+  alert("Reservation submitted!");
+}
+
+
+
+</script>
+
+</body>
+</html>

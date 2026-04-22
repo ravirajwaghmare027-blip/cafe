@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>E11ven Cafe — Order</title>
+  <link rel="stylesheet" href="assets/css/style1.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+  <link rel="stylesheet" href="assets/css/cafe.css">
+  <link rel="stylesheet" href="assets/css/owl-carousel.css">
+  <link rel="stylesheet" href="assets/css/lightbox.css">
+
+  <style>
+    .order-wrapper{max-width:1100px;margin:auto;padding:24px 16px;min-height:calc(100vh - 140px);display:flex;flex-direction:column;gap:24px;}
+    .order-card{background:#fff;border-radius:16px;padding:24px;box-shadow:0px 6px 24px rgba(0,0,0,0.08);}
+    .order-header{display:flex;align-items:center;justify-content:space-between;}
+    .order-header h2{margin:0;font-size:1.8rem;font-weight:700;}
+    .cart-table{margin-top:22px;overflow:hidden;border-radius:12px;border:1px solid #eee;}
+    .cart-table table{width:100%;border-collapse:collapse;background:#fff;}
+    .cart-table th{background:#fafafa;padding:12px;font-size:0.95rem;font-weight:600;border-bottom:1px solid #eee;}
+    .cart-table td{padding:12px;border-bottom:1px solid #f1f1f1;}
+    .remove-btn{background:#e74c3c;border:none;padding:6px 12px;border-radius:8px;color:#fff;cursor:pointer;font-size:0.85rem;font-weight:600;letter-spacing:0.3px;transition:all 0.25s ease;box-shadow:0px 4px 10px rgba(231,76,60,0.35);}
+    .remove-btn:hover{background:#c0392b;transform:translateY(-2px) scale(1.05);box-shadow:0px 6px 12px rgba(231,76,60,0.45);}
+    .remove-btn:active{transform:scale(0.95);}
+    .checkout-box{background:#111;color:#fff;padding:20px;border-radius:14px;margin-top:20px;display:flex;flex-direction:column;gap:12px;}
+    .checkout-box input{padding:10px;border-radius:8px;border:none;outline:none;font-size:1rem;}
+    .place-btn{background:#d35400;padding:12px;border:none;border-radius:10px;font-size:1.1rem;color:#fff;cursor:pointer;margin-top:6px;transition:0.2s;}
+    .place-btn:hover{opacity:0.85;}
+    .bill-box{background:#222;padding:15px;border-radius:10px;margin-top:10px;}
+    .bill-row{display:flex;justify-content:space-between;font-size:1.1rem;font-weight:bold;}
+  </style>
+</head>
+
+<body style="background-color:antiquewhite;margin-top:-30px;">
+
+<header class="header-area header-sticky">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="main-nav">
+          <a href="index.html" class="logo">
+            <img src="assets/images/logo1.png" style="width:110px;height:140px;margin-top:-22px;">
+          </a>
+          <ul class="nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="order.html">Order</a></li>
+            <li><a href="hall.html">Hall Booking</a></li>
+            <li><a href="reserve.html">Reservations</a></li>
+            <li><a href="admin.html">Admin</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="order-wrapper" style="margin-top:140px;">
+  <div class="order-card">
+    <div class="order-header">
+      <h2>Your Cart</h2>
+    </div>
+
+    <div class="cart-table">
+      <div id="cartItems"></div>
+    </div>
+
+    <div class="checkout-box">
+      <h3 style="margin:0">Checkout Details</h3>
+      <div class="bill-box">
+        <div class="bill-row">
+          <span>Total Price</span>
+          <span>₹<span id="grandTotal">0</span></span>
+        </div>
+      </div>
+
+      <input id="custName" placeholder="Your Name">
+      <input id="custPhone" placeholder="Phone Number">
+
+      <button class="place-btn" onclick="placeOrder()">Place Order</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <ul class="social-icons">
+          <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+          <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+          <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <div class="logo">
+          <a href="index.html"><img src="assets/images/logo2.png" style="width:160px;margin-top:-40px;"></a>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <p>© Copyright E11Ven Cafe Co.<br>Design: CrystelCode Technologies</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Render cart table
+function renderCartTable(){
+  const cartDiv = document.getElementById("cartItems");
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  if(cart.length === 0){
+    cartDiv.innerHTML = "<p>Your cart is empty.</p>";
+    return;
+  }
+  let table = `<table>
+    <tr>
+      <th>Item</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Subtotal</th>
+      <th>Action</th>
+    </tr>`;
+  cart.forEach((item,index)=>{
+    table += `<tr>
+      <td>${item.name}</td>
+      <td>₹${item.price}</td>
+      <td>${item.qty}</td>
+      <td>₹${item.price*item.qty}</td>
+      <td><button class="remove-btn" onclick="removeItem(${index})">Remove</button></td>
+    </tr>`;
+  });
+  table += `</table>`;
+  cartDiv.innerHTML = table;
+  updateBill();
+}
+
+// Remove item
+function removeItem(index){
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.splice(index,1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  renderCartTable();
+}
+
+// Update total
+function updateBill(){
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let total = 0;
+  cart.forEach(item=>{ total += item.price*item.qty; });
+  document.getElementById("grandTotal").innerText = total;
+}
+
+// Place Order
+function placeOrder(){
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  if(cart.length===0){ alert("Cart is empty!"); return; }
+
+  let name = document.getElementById("custName").value.trim();
+  let phone = document.getElementById("custPhone").value.trim();
+  if(name==="" || phone===""){ alert("Enter your name and phone number."); return; }
+
+  let orders = JSON.parse(localStorage.getItem("e11_orders") || "[]");
+  let total = 0;
+  cart.forEach(item=>{ total += item.price*item.qty; });
+  let orderTime = new Date().toLocaleString();
+
+  orders.push({customer:name, phone:phone, items:cart, total:total, time:orderTime});
+  localStorage.setItem("e11_orders", JSON.stringify(orders));
+
+  // Clear cart
+  localStorage.removeItem("cart");
+  renderCartTable();
+  alert("Order placed successfully! It will appear in Admin Dashboard.");
+}
+
+renderCartTable();
+</script>
+
+</body>
+</html>

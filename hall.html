@@ -1,0 +1,227 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <title>Hall Booking — E11ven Cafe</title>
+
+  <link rel="stylesheet" href="assets/css/style1.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app1.js"></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/cafe.css">
+
+  </head>
+
+  <body style="background-color:antiquewhite;">
+
+  <header class="header-area header-sticky">
+  <div class="container">
+  <nav class="main-nav">
+
+  <a href="index.html" class="logo">
+  <img src="assets/images/logo1.png" style="width:110px;height:140px;margin-top:-22px;">
+  </a>
+
+  <ul class="nav">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="menu.html">Menu</a></li>
+  <li><a href="order.html">Order</a></li>
+  <li><a href="hall.html">Hall Booking</a></li>
+  <li><a href="reserve.html">Reservations</a></li>
+  <li><a href="admin-login.html">Admin</a></li>
+  </ul>
+
+  </nav>
+  </div>
+  </header>
+
+
+  <section class="hall-hero" style="margin-top:40px;">
+
+  <div class="hall-form-wrapper">
+
+  <h2>Book Our Event Hall</h2>
+  <p>Perfect for Birthdays • Anniversaries • Corporate Events • Family Gatherings</p>
+
+  <div class="hall-grid">
+
+  <div class="floating-group">
+  <label>Your Name *</label>
+  <input id="hallName" type="text">
+  </div>
+
+  <div class="floating-group">
+  <label>Event Type *</label>
+  <select id="eventType">
+  <option value=""></option>
+  <option>Birthday</option>
+  <option>Anniversary</option>
+  <option>Corporate Meeting</option>
+  <option>Engagement</option>
+  <option>Family Gathering</option>
+  </select>
+  </div>
+
+  <div class="floating-group">
+  <label>Date *</label>
+  <input id="hallDate" type="date">
+  </div>
+
+  <div class="floating-group">
+  <label>Time *</label>
+  <input id="hallTime" type="time">
+  </div>
+
+  <div class="floating-group">
+  <label>Hall Type *</label>
+  <select id="hallTypeSelect" onchange="showHallPrice()">
+  <option value="">Select Hall</option>
+  <option value="Small Hall" data-price="2000">Small Hall (10–20 People)</option>
+  <option value="Medium Hall" data-price="4000">Medium Hall (20–40 People)</option>
+  <option value="Party Hall" data-price="7000">Party Hall (40–60 People)</option>
+  <option value="Grand Hall" data-price="12000">Grand Hall (60–80 People)</option>
+  </select>
+  <p style="margin-top:6px;font-weight:600;">
+  Price: ₹<span id="hallPrice">0</span>
+  </p>
+  </div>
+
+  <div class="floating-group">
+  <label>Contact Phone *</label>
+  <input id="hallPhone" type="text">
+  </div>
+
+  <div class="floating-group" style="grid-column:span 2;">
+  <label>Additional Notes / Requirements</label>
+  <textarea id="hallNotes" rows="4"></textarea>
+  </div>
+
+  </div>
+
+  <button class="btn reserve-btn"
+  style="width:100%;margin-top:18px;background:#d35400;"
+  onclick="hallNow()">
+  Submit Request
+  </button>
+
+  <div class="info-tags">
+
+  <div class="info-tag">
+  <i class="fa fa-chair"></i> Elegant Seating
+  </div>
+
+  <div class="info-tag">
+  <i class="fa fa-utensils"></i> Catering Packages
+  </div>
+
+  <div class="info-tag">
+  <i class="fa fa-music"></i> Music Setup
+  </div>
+
+  <div class="info-tag">
+  <i class="fa fa-lightbulb"></i> Custom Decoration
+  </div>
+
+  </div>
+
+  </div>
+
+  </section>
+
+  <footer class="footer">
+  <div class="container">
+  <div class="row">
+
+  <div class="col-lg-4">
+  <ul class="social-icons">
+  <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+  <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+  <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+  <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+  </ul>
+  </div>
+
+  <div class="col-lg-4">
+  <div class="logo">
+  <a href="index.html">
+  <img src="assets/images/logo2.png" style="width:160px;margin-top:-40px;">
+  </a>
+  </div>
+  </div>
+
+  <div class="col-lg-4">
+  <p>© Copyright E11Ven Cafe Co.<br>
+  Design: CrystelCode Technologies</p>
+  </div>
+
+  </div>
+  </div>
+  </footer>
+
+  <script>
+  // Show hall price
+  function showHallPrice(){
+    let select=document.getElementById("hallTypeSelect");
+    let price=select.options[select.selectedIndex].dataset.price || 0;
+    document.getElementById("hallPrice").innerText=price;
+  }
+
+  // Submit hall booking
+  function hallNow(){
+    let name=document.getElementById("hallName").value.trim();
+    let eventType=document.getElementById("eventType").value;
+    let date=document.getElementById("hallDate").value;
+    let time=document.getElementById("hallTime").value;
+    let hallSelect=document.getElementById("hallTypeSelect");
+    let hallType=hallSelect.value;
+    let hallPrice=hallSelect.options[hallSelect.selectedIndex].dataset.price;
+    let phone=document.getElementById("hallPhone").value.trim();
+    let notes=document.getElementById("hallNotes").value.trim();
+
+    if(name=="" || eventType=="" || date=="" || time=="" || hallType=="" || phone==""){
+      alert("Please fill all required fields");
+      return;
+    }
+
+    // Load existing hall bookings
+    let hallBookings = JSON.parse(localStorage.getItem("e11_halls") || "[]");
+
+    // Add new booking
+    hallBookings.push({
+      customer: name,
+      phone: phone,
+      event: eventType,
+      hall: hallType,
+      price: hallPrice,
+      date: date,
+      time: time,
+      notes: notes,
+      bookedAt: new Date().toLocaleString()
+    });
+
+    // Save to localStorage
+    localStorage.setItem("e11_halls", JSON.stringify(hallBookings));
+
+    alert("Hall booking submitted! It will appear in Admin Dashboard.");
+
+    // Clear form
+    document.getElementById("hallName").value="";
+    document.getElementById("eventType").value="";
+    document.getElementById("hallDate").value="";
+    document.getElementById("hallTime").value="";
+    document.getElementById("hallTypeSelect").value="";
+    document.getElementById("hallPrice").innerText="0";
+    document.getElementById("hallPhone").value="";
+    document.getElementById("hallNotes").value="";
+  }
+  </script>
+
+  </body>
+  </html>
